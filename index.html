@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <title>Mohammad Ali — Student, Explorer & Builder</title>
+  <meta name="description" content="The portfolio of Mohammad Ali: simulations, games, puzzles, 3D experiments, and an ever-expanding map of curiosity.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Libre+Baskerville:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      color-scheme:light dark;
+      --paper:#f3f6f5; --ink:#0a1721; --muted:#50616c; --line:rgba(10,23,33,.16);
+      --panel:#ffffff; --panel-soft:#e8efed; --nav:rgba(243,246,245,.84);
+      --night:#05121a; --night-2:#0b202b; --night-ink:#effdf9; --night-muted:#a7c0c1;
+      --cyan:#10b9b1; --cyan-soft:#bdf4ea; --orange:#ff6a33; --yellow:#f5c951;
+      --shadow:0 24px 70px rgba(7,27,36,.12); --radius:20px;
+    }
+    @media (prefers-color-scheme:dark){
+      :root{
+        --paper:#07141b; --ink:#edf8f5; --muted:#9bb0b4; --line:rgba(223,247,241,.16);
+        --panel:#0d2028; --panel-soft:#122a33; --nav:rgba(7,20,27,.84);
+        --cyan:#38d7cb; --cyan-soft:#153e40; --orange:#ff7544; --yellow:#ffd463;
+        --shadow:0 26px 70px rgba(0,0,0,.26);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:84px}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:"Archivo",sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    ::selection{background:var(--cyan);color:#041015}
+    .skip{position:fixed;top:8px;left:8px;z-index:1000;padding:10px 14px;background:var(--panel);border:1px solid var(--line);transform:translateY(-140%)}
+    .skip:focus{transform:none}
+    .nav-wrap{position:fixed;z-index:50;top:calc(12px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);width:min(760px,calc(100% - 24px));pointer-events:none}
+    nav{pointer-events:auto;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:9px 10px 9px 18px;background:var(--nav);border:1px solid var(--line);box-shadow:0 10px 34px rgba(4,18,24,.12);backdrop-filter:blur(16px);border-radius:999px}
+    .nav-index{font:500 10px/1 "IBM Plex Mono",monospace;letter-spacing:.15em;color:var(--muted)}
+    .nav-links{display:flex;align-items:center;gap:5px}
+    .nav-links a{font-size:12px;font-weight:700;padding:8px 11px;border-radius:999px;color:var(--muted);transition:background .2s,color .2s}
+    .nav-links a:hover,.nav-links a:focus-visible{background:var(--ink);color:var(--paper);outline:none}
+    .nav-contact{background:var(--ink)!important;color:var(--paper)!important}
+
+    .hero{position:relative;min-height:790px;height:100svh;max-height:980px;display:grid;align-items:end;color:var(--night-ink);background:var(--night);isolation:isolate;overflow:hidden}
+    #cosmos{position:absolute;inset:0;width:100%;height:100%;z-index:-3}
+    .hero::after{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(90deg,rgba(4,15,22,.95) 0%,rgba(4,15,22,.68) 47%,rgba(4,15,22,.12) 78%),linear-gradient(0deg,rgba(4,15,22,.98) 0%,transparent 47%)}
+    .hero-grid{width:min(1200px,calc(100% - 56px));margin:0 auto;padding:155px 0 84px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(340px,.65fr);gap:48px;align-items:end}
+    .identity{display:flex;align-items:center;gap:12px;margin-bottom:24px;color:var(--night-muted);font:500 12px/1.3 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+    .identity .pulse{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 7px rgba(16,185,177,.13)}
+    h1{font-size:clamp(54px,8vw,112px);line-height:.88;letter-spacing:-.075em;margin:0;max-width:880px;font-weight:800}
+    h1 .name{display:block;font-size:.17em;line-height:1.4;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);font-family:"IBM Plex Mono",monospace;font-weight:500;margin-bottom:16px}
+    h1 em{font-family:"Libre Baskerville",serif;font-weight:400;letter-spacing:-.065em}
+    .hero-copy{max-width:650px;font-size:clamp(17px,2vw,22px);line-height:1.52;color:#c7d8d8;margin:30px 0 34px}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+    .button{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 19px;border-radius:4px;font-weight:700;font-size:14px;border:1px solid rgba(255,255,255,.22);transition:background .2s,border-color .2s,color .2s}
+    .button.primary{background:var(--cyan);color:#041315;border-color:var(--cyan)}
+    .button:hover,.button:focus-visible{border-color:var(--cyan);outline:none}
+    .button.primary:hover,.button.primary:focus-visible{background:#71f0df}
+    .hero-aside{border-top:1px solid rgba(255,255,255,.25);padding-top:22px;display:grid;gap:22px}
+    .hero-stat{display:grid;grid-template-columns:84px 1fr;gap:18px;align-items:baseline}
+    .hero-stat strong{font-size:34px;line-height:1;color:#fff;letter-spacing:-.05em}
+    .hero-stat span{font-size:13px;color:var(--night-muted)}
+    .scroll-note{position:absolute;right:24px;bottom:32px;writing-mode:vertical-rl;font:500 10px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.15em;color:#78979a}
+
+    main section:not(.hero){width:min(1200px,calc(100% - 56px));margin:0 auto}
+    .section-head{display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:28px;align-items:start;margin-bottom:46px}
+    .section-num{font:500 11px/1.4 "IBM Plex Mono",monospace;color:var(--cyan);letter-spacing:.12em}
+    .section-title{margin:0;font-size:clamp(35px,5vw,68px);line-height:.98;letter-spacing:-.055em;max-width:690px}
+    .section-note{margin:8px 0 0;color:var(--muted);max-width:470px}
+    .section-link{align-self:end;border-bottom:1px solid var(--ink);font-size:13px;font-weight:700;padding:5px 0}
+
+    .projects{padding:112px 0 120px}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px 148px}
+    .filter{border:1px solid var(--line);background:transparent;color:var(--muted);padding:8px 12px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer}
+    .filter[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+    .project-list{border-top:1px solid var(--line)}
+    .project{display:grid;grid-template-columns:96px 180px minmax(0,1fr) 160px;gap:28px;align-items:center;padding:30px 0;border-bottom:1px solid var(--line);transition:opacity .2s,background .2s;position:relative}
+    .project[hidden]{display:none}
+    .project:hover{background:linear-gradient(90deg,transparent,var(--panel-soft),transparent)}
+    .project-id{font:500 12px/1 "IBM Plex Mono",monospace;color:var(--muted)}
+    .project-art{height:112px;position:relative;display:grid;place-items:center;perspective:500px;overflow:hidden;background:var(--panel-soft);border-radius:3px}
+    .project-art svg{width:100%;height:100%}
+    .project-copy h3{font-size:25px;letter-spacing:-.035em;margin:0 0 6px}
+    .project-copy p{margin:0;color:var(--muted);max-width:600px;font-size:14px}
+    .project-link{display:inline-flex;align-items:center;gap:7px;margin-top:12px;padding-bottom:2px;border-bottom:1px solid var(--ink);font-size:12px;font-weight:700}
+    .project-link:hover,.project-link:focus-visible{color:var(--cyan);border-color:var(--cyan);outline:none}
+    .project-link svg{width:15px;height:15px;fill:currentColor}
+    .tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+    .tag{font:500 10px/1.2 "IBM Plex Mono",monospace;padding:7px 8px;border:1px solid var(--line);border-radius:3px;color:var(--muted)}
+
+    .curiosity{padding:105px 0;position:relative}
+    .curiosity-layout{display:grid;grid-template-columns:minmax(0,.9fr) minmax(390px,1.1fr);gap:70px;align-items:center}
+    .statement{font-family:"Libre Baskerville",serif;font-size:clamp(28px,4vw,48px);line-height:1.26;letter-spacing:-.035em;margin:0 0 30px}
+    .statement em{color:var(--orange)}
+    .curiosity-copy>p{color:var(--muted);max-width:560px}
+    .skill-legend{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:34px}
+    .skill-legend span{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600}
+    .skill-legend i{width:8px;height:8px;background:var(--cyan);display:inline-block;border-radius:50%}
+    .radar{aspect-ratio:1;position:relative;border:1px solid var(--line);border-radius:50%;max-width:560px;margin:auto;background:radial-gradient(circle at center,var(--panel) 0 4%,transparent 4.5%),repeating-radial-gradient(circle at center,transparent 0 18%,var(--line) 18.2% 18.45%,transparent 18.7% 36%)}
+    .radar::before,.radar::after{content:"";position:absolute;background:var(--line);left:50%;top:4%;bottom:4%;width:1px}
+    .radar::after{transform:rotate(90deg)}
+    .radar-core{position:absolute;inset:38%;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;text-align:center;font:500 10px/1.45 "IBM Plex Mono",monospace;letter-spacing:.08em;z-index:3}
+    .orbit-label{position:absolute;padding:9px 12px;background:var(--panel);border:1px solid var(--line);box-shadow:0 8px 20px rgba(0,0,0,.08);font-size:12px;font-weight:700;white-space:nowrap}
+    .orbit-label:nth-of-type(1){left:12%;top:17%}.orbit-label:nth-of-type(2){right:1%;top:31%}.orbit-label:nth-of-type(3){right:13%;bottom:12%}.orbit-label:nth-of-type(4){left:4%;bottom:25%}.orbit-label:nth-of-type(5){left:43%;top:4%}.orbit-label:nth-of-type(6){left:45%;bottom:3%}
+
+    .stack{width:100%!important;max-width:none!important;background:var(--night);color:var(--night-ink);padding:110px max(28px,calc((100vw - 1200px)/2));margin:0!important}
+    .stack .section-head{max-width:1200px;margin-inline:auto}.stack .section-note{color:var(--night-muted)}
+    .stack-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.1fr .9fr;gap:70px}
+    .code-card{background:#071a22;border:1px solid rgba(205,241,238,.17);box-shadow:inset 0 1px rgba(255,255,255,.04);padding:22px;min-height:330px;font:400 13px/1.8 "IBM Plex Mono",monospace;color:#b8cccc;position:relative;overflow:hidden}
+    .code-card::before{content:"learning_loop.py";display:block;color:#698d90;border-bottom:1px solid rgba(205,241,238,.13);padding-bottom:12px;margin-bottom:22px}
+    .line{display:block}.n{color:#6e9293;display:inline-block;width:30px}.kw{color:#ff8d62}.fn{color:#6de7d8}.str{color:#f6d877}.com{color:#608187}
+    .principles{display:grid;gap:0;border-top:1px solid rgba(205,241,238,.2)}
+    .principle{display:grid;grid-template-columns:56px 1fr;gap:18px;padding:22px 0;border-bottom:1px solid rgba(205,241,238,.2)}
+    .principle b{font:500 11px/1.5 "IBM Plex Mono",monospace;color:var(--cyan)}
+    .principle h3{font-size:18px;margin:0 0 4px}.principle p{font-size:13px;color:var(--night-muted);margin:0}
+
+    .toolkit{padding:118px 0}
+    .tool-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
+    .tool{min-height:178px;padding:24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between;background:var(--panel);transition:background .2s,color .2s}
+    .tool:hover{background:var(--ink);color:var(--paper)}
+    .tool-mark{width:48px;height:48px;display:grid;place-items:center;color:var(--cyan)}
+    .tool-mark svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+    .tool strong{font-size:18px;letter-spacing:-.025em}.tool span{display:block;color:var(--muted);font:500 10px/1.4 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em;margin-top:3px}.tool:hover span{color:currentColor;opacity:.7}
+    .tool:nth-child(7){grid-column:span 2}
+
+    .influences{width:100%!important;max-width:none!important;margin:0!important;padding:112px max(28px,calc((100vw - 1200px)/2));background:var(--panel-soft)}
+    .influences-inner{max-width:1200px;margin:0 auto}
+    .influence-grid{display:grid;grid-template-columns:1.05fr .95fr 1fr;border-top:1px solid var(--line)}
+    .influence{padding:30px 30px 8px 0;border-right:1px solid var(--line);min-width:0}
+    .influence+.influence{padding-left:30px}.influence:last-child{border-right:0}
+    .influence-index{font:500 10px/1.4 "IBM Plex Mono",monospace;color:var(--orange);letter-spacing:.12em}
+    .influence h3{font-size:27px;line-height:1.1;letter-spacing:-.04em;margin:42px 0 18px}
+    .name-list{list-style:none;padding:0;margin:0}
+    .name-list li{padding:9px 0;border-top:1px solid var(--line);font-size:14px;font-weight:600}
+    .sketch-note{font-family:"Libre Baskerville",serif;font-size:22px;line-height:1.48;margin:0 0 26px;letter-spacing:-.025em}
+    .sketch-strip{height:126px;position:relative;overflow:hidden;border:1px solid var(--line);background:var(--panel)}
+    .sketch-strip svg{width:100%;height:100%}
+
+    .books{padding:118px 0}
+    .bookshelf{display:grid;grid-template-columns:repeat(6,1fr);align-items:end;gap:9px;border-bottom:16px solid var(--ink);padding:0 10px;min-height:380px;perspective:1000px}
+    .book{position:relative;min-height:270px;background:var(--book);color:var(--book-ink);padding:20px 14px;border-radius:2px 6px 2px 2px;transform-origin:bottom;box-shadow:inset -9px 0 0 rgba(0,0,0,.11),4px 7px 12px rgba(0,0,0,.13);display:flex;writing-mode:vertical-rl;justify-content:space-between;transition:transform .25s}
+    .book:nth-child(2){min-height:320px;transform:rotate(-2deg)}.book:nth-child(3){min-height:295px}.book:nth-child(4){min-height:345px;transform:rotate(1.5deg)}.book:nth-child(5){min-height:305px}.book:nth-child(6){min-height:335px;transform:rotate(-1deg)}
+    .book:hover{transform:translateY(-10px) rotate(0)}
+    .book strong{font-size:16px;line-height:1.2;letter-spacing:.015em}.book span{font:500 9px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.14em;opacity:.72}
+    .book-1{--book:#efcc55;--book-ink:#182224}.book-2{--book:#c8482f;--book-ink:#fff7ea}.book-3{--book:#ecede7;--book-ink:#172127}.book-4{--book:#4aa39a;--book-ink:#071b1e}.book-5{--book:#1d2f38;--book-ink:#f5deb0}.book-6{--book:#e38b45;--book-ink:#142228}
+    .shelf-note{margin:24px 0 0;text-align:right;color:var(--muted);font:500 11px/1.5 "IBM Plex Mono",monospace}
+
+    .quotes{width:100%!important;max-width:none!important;margin:0!important;padding:112px max(28px,calc((100vw - 1200px)/2));background:var(--night);color:var(--night-ink)}
+    .quotes-inner{max-width:1200px;margin:0 auto}.quotes .section-note{color:var(--night-muted)}
+    .quote-grid{display:grid;grid-template-columns:1.18fr .82fr;border-top:1px solid rgba(205,241,238,.2)}
+    .quote-lead{grid-row:span 2;padding:40px 52px 38px 0;border-right:1px solid rgba(205,241,238,.2)}
+    .quote-card{padding:32px 0 32px 42px;border-bottom:1px solid rgba(205,241,238,.2)}.quote-card:last-child{border-bottom:0}
+    .quote-mark{display:block;color:var(--cyan);font:500 11px/1 "IBM Plex Mono",monospace;letter-spacing:.12em;margin-bottom:28px}
+    .quote-lead blockquote{font-family:"Libre Baskerville",serif;font-size:clamp(32px,4.4vw,61px);line-height:1.14;letter-spacing:-.045em;margin:0;max-width:740px}
+    .quote-lead blockquote em{color:var(--yellow);font-weight:400}.quote-card blockquote{font-size:22px;line-height:1.35;letter-spacing:-.025em;margin:0;max-width:430px}
+    .quote-card p{margin:16px 0 0;color:var(--night-muted);font-size:13px}.quote-source{display:block;margin-top:28px;color:var(--night-muted);font:500 10px/1.4 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase}
+
+    .contact{width:100%!important;max-width:none!important;margin:0!important;background:var(--orange);color:#151b1c;padding:118px max(28px,calc((100vw - 1200px)/2)) calc(72px + env(safe-area-inset-bottom))}
+    .contact-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;gap:72px;align-items:end}
+    .contact h2{font-size:clamp(50px,8vw,106px);line-height:.88;letter-spacing:-.075em;margin:0}
+    .contact h2 em{font-family:"Libre Baskerville",serif;font-weight:400}
+    .contact-copy{font-size:17px;max-width:430px;margin:22px 0 30px}
+    .contact-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .contact .button{border-color:rgba(0,0,0,.25)}.contact .button.primary{background:#142228;color:#fff;border-color:#142228}
+    .contact-side{display:grid;gap:24px}
+    .social-links{display:flex;align-items:center;gap:12px;padding-top:18px;border-top:1px solid rgba(0,0,0,.35)}
+    .social-button{width:58px;height:58px;display:grid;place-items:center;border:1px solid rgba(0,0,0,.32);background:transparent;color:#151b1c;transition:background .2s,color .2s,border-color .2s}
+    .social-button svg{width:27px;height:27px;fill:currentColor}.social-button:hover,.social-button:focus-visible{background:#142228;color:#fff;border-color:#142228;outline:none}
+    .contact-row{border-top:1px solid rgba(0,0,0,.35);padding-top:16px;display:grid;grid-template-columns:90px 1fr;gap:20px;font-size:13px}
+    .contact-row span:first-child{font-family:"IBM Plex Mono",monospace;opacity:.7}
+    .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+    footer{max-width:1200px;margin:74px auto 0;padding-top:18px;border-top:1px solid rgba(0,0,0,.35);display:flex;justify-content:space-between;font:500 10px/1.4 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+    .toast{position:fixed;z-index:80;left:50%;bottom:24px;transform:translate(-50%,140%);padding:12px 16px;background:var(--ink);color:var(--paper);font:500 12px/1.2 "IBM Plex Mono",monospace;box-shadow:var(--shadow);transition:transform .25s;border-radius:3px}
+    .toast.show{transform:translate(-50%,0)}
+
+    @media(max-width:800px){
+      .nav-index{display:none}.nav-wrap{width:calc(100% - 16px);top:calc(8px + env(safe-area-inset-top))}nav{justify-content:center;padding:7px}.nav-links{width:100%;justify-content:space-between}.nav-links a{font-size:11px;padding:8px 9px}
+      .hero{min-height:760px;height:auto}.hero-grid{width:calc(100% - 36px);padding:138px 0 64px;grid-template-columns:1fr;gap:58px}.hero::after{background:linear-gradient(0deg,rgba(4,15,22,.99) 0%,rgba(4,15,22,.72) 54%,rgba(4,15,22,.3) 100%)}h1{font-size:clamp(49px,15vw,76px)}.hero-copy{font-size:17px}.hero-aside{grid-template-columns:repeat(3,1fr);gap:10px}.hero-stat{display:block}.hero-stat strong{font-size:27px;display:block;margin-bottom:8px}.hero-stat span{font-size:11px;line-height:1.35;display:block}.scroll-note{display:none}
+      main section:not(.hero){width:calc(100% - 36px)}.section-head{grid-template-columns:42px 1fr;gap:12px;margin-bottom:34px}.section-link{grid-column:2;justify-self:start}.section-title{font-size:42px}.section-note{font-size:14px}
+      .projects{padding:82px 0}.filters{margin:0 0 20px}.project{grid-template-columns:44px 1fr;gap:12px 14px;padding:22px 0}.project-art{grid-column:2;height:156px}.project-copy{grid-column:2}.tags{grid-column:2;justify-content:flex-start}
+      .curiosity{padding:82px 0}.curiosity-layout{grid-template-columns:1fr;gap:44px}.radar{width:100%;max-width:480px}.orbit-label{font-size:10px;padding:7px 8px}
+      .stack{padding:82px 18px}.stack-grid{grid-template-columns:1fr;gap:38px}.code-card{font-size:11px;padding:16px;min-height:auto;overflow:auto}
+      .toolkit{padding:82px 0}.tool-grid{grid-template-columns:repeat(2,1fr)}.tool{min-height:148px;padding:18px}.tool:nth-child(7){grid-column:span 2}
+      .influences{padding:82px 18px}.influence-grid{grid-template-columns:1fr}.influence,.influence+.influence{padding:25px 0 34px;border-right:0;border-bottom:1px solid var(--line)}.influence:last-child{border-bottom:0}.influence h3{margin:24px 0 15px}
+      .books{padding:82px 0}.bookshelf{grid-template-columns:repeat(3,1fr);row-gap:24px;min-height:0;border-bottom:0;padding:0;align-items:end}.book{min-height:240px!important;border-bottom:12px solid var(--ink)}.book:nth-child(n){transform:none}.shelf-note{text-align:left}
+      .quotes{padding:82px 18px}.quote-grid{grid-template-columns:1fr}.quote-lead{grid-row:auto;padding:30px 0 38px;border-right:0;border-bottom:1px solid rgba(205,241,238,.2)}.quote-card{padding:28px 0}.quote-lead blockquote{font-size:39px}.quote-card blockquote{font-size:20px}
+      .contact{padding:82px 18px calc(42px + env(safe-area-inset-bottom))}.contact-grid{grid-template-columns:1fr;gap:54px}.contact h2{font-size:62px}.contact-row{grid-template-columns:75px 1fr;word-break:break-word}footer{margin-top:58px;gap:20px;align-items:flex-end}
+    }
+    @media(max-width:410px){.nav-links a:nth-child(3){display:none}.hero-aside{grid-template-columns:1fr}.hero-stat{display:grid;grid-template-columns:60px 1fr}.bookshelf{grid-template-columns:repeat(2,1fr)}.skill-legend{grid-template-columns:1fr}.contact h2{font-size:52px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.book,.toast,.button,.nav-links a{transition:none}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#projects">Skip to projects</a>
+  <div class="nav-wrap">
+    <nav aria-label="Portfolio sections">
+      <span class="nav-index">MA / 2026</span>
+      <div class="nav-links">
+        <a href="#projects">Projects</a>
+        <a href="#toolkit">Toolkit</a>
+        <a href="#books">Bookshelf</a>
+        <a class="nav-contact" href="#contact">Say hello</a>
+      </div>
+    </nav>
+  </div>
+
+  <header class="hero" id="top">
+    <canvas id="cosmos" aria-hidden="true"></canvas>
+    <div class="hero-grid">
+      <div>
+        <div class="identity"><span class="pulse"></span> Student · Explorer · Builder</div>
+        <h1><span class="name">Mohammad Ali</span>I build to understand <em>how things move.</em></h1>
+        <p class="hero-copy">From planets and drone routes to voxel worlds and puzzle solvers — I turn big questions into small, working experiments.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#projects">Explore the builds <span aria-hidden="true">↓</span></a>
+          <a class="button" href="https://github.com/AliRender13" target="_blank" rel="noopener noreferrer" aria-label="Visit Mohammad Ali on GitHub" title="GitHub"><svg aria-hidden="true" viewBox="0 0 24 24" width="21" height="21" fill="currentColor"><path d="M12 .8a11.4 11.4 0 0 0-3.6 22.2c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6a4.7 4.7 0 0 1 1.2-3.2c-.1-.3-.5-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.9.1 3.2a4.7 4.7 0 0 1 1.2 3.2c0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.4 11.4 0 0 0 12 .8Z"/></svg></a>
+        </div>
+      </div>
+      <aside class="hero-aside" aria-label="Portfolio summary">
+        <div class="hero-stat"><strong>07</strong><span>working Python projects</span></div>
+        <div class="hero-stat"><strong>06</strong><span>curiosity fields in motion</span></div>
+        <div class="hero-stat"><strong>∞</strong><span>questions still worth chasing</span></div>
+      </aside>
+    </div>
+    <span class="scroll-note">Scroll to enter orbit</span>
+  </header>
+
+  <main>
+    <section class="projects" id="projects">
+      <div class="section-head">
+        <span class="section-num">01 / BUILDS</span>
+        <div><h2 class="section-title">Experiments with real gravity.</h2><p class="section-note">Seven compact Python projects, each built around a genuine interest — physics, worlds, flight, geography, and puzzles.</p></div>
+        <a class="section-link" href="https://github.com/AliRender13" target="_blank" rel="noopener noreferrer">All repositories ↗</a>
+      </div>
+      <div class="filters" role="group" aria-label="Filter projects">
+        <button class="filter" type="button" aria-pressed="true" data-filter="all">All 7</button>
+        <button class="filter" type="button" aria-pressed="false" data-filter="space">Space & flight</button>
+        <button class="filter" type="button" aria-pressed="false" data-filter="worlds">Worlds</button>
+        <button class="filter" type="button" aria-pressed="false" data-filter="puzzles">Puzzles</button>
+      </div>
+      <div class="project-list">
+        <article class="project" data-category="space">
+          <span class="project-id">P—01</span>
+          <div class="project-art" aria-hidden="true"><svg viewBox="0 0 180 112"><rect width="180" height="112" fill="#071a23"/><ellipse cx="89" cy="57" rx="65" ry="25" fill="none" stroke="#2d666c"/><ellipse cx="89" cy="57" rx="45" ry="17" fill="none" stroke="#1f4c53"/><circle cx="89" cy="57" r="11" fill="#f5c951"/><circle cx="38" cy="43" r="5" fill="#35d0c3"/><circle cx="130" cy="71" r="7" fill="#ff6a33"/><circle cx="148" cy="52" r="2" fill="#fff"/></svg></div>
+          <div class="project-copy"><h3>Orbit Sim</h3><p>A visual playground for gravitational motion, turning orbital mathematics into animated planetary paths.</p><a class="project-link" href="https://www.linkedin.com/feed/update/urn:li:activity:7509549945746534401/" target="_blank" rel="noopener noreferrer" aria-label="View the Orbit Sim walkthrough on LinkedIn"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5.3 7.8H1.7V22h3.6V7.8ZM3.5 2A2.1 2.1 0 1 0 3.5 6.2 2.1 2.1 0 0 0 3.5 2Zm8.2 5.8H8.2V22h3.6v-7c0-1.8.3-3.6 2.6-3.6 2.3 0 2.3 2.1 2.3 3.7V22h3.6v-7.8c0-3.8-.8-6.8-5.3-6.8-2.1 0-3.6 1.2-4.2 2.3h-.1V7.8Z"/></svg>LinkedIn post <span aria-hidden="true">↗</span></a></div>
+          <div class="tags"><span class="tag">Python</span><span class="tag">Matplotlib</span><span class="tag">Physics</span></div>
+        </article>
+        <article class="project" data-category="worlds">
+          <span class="project-id">P—02</span>
+          <div class="project-art" aria-hidden="true"><svg viewBox="0 0 180 112"><rect width="180" height="112" fill="#d9e5df"/><path d="M25 42l31-17 31 17-31 17z" fill="#56a975"/><path d="M25 42v33l31 18V59z" fill="#317d5a"/><path d="M87 42v33L56 93V59z" fill="#28694e"/><path d="M78 55l30-17 30 17-30 17z" fill="#8bbb61"/><path d="M78 55v29l30 17V72z" fill="#4c7e42"/><path d="M138 55v29l-30 17V72z" fill="#376f3d"/></svg></div>
+          <div class="project-copy"><h3>Voxel Terrain</h3><p>A Minecraft-inspired terrain generator that turns simple rules and seeded randomness into explorable block landscapes.</p></div>
+          <div class="tags"><span class="tag">Python</span><span class="tag">Procedural</span><span class="tag">Game dev</span></div>
+        </article>
+        <article class="project" data-category="space">
+          <span class="project-id">P—03</span>
+          <div class="project-art" aria-hidden="true"><svg viewBox="0 0 180 112"><rect width="180" height="112" fill="#dce9ea"/><path d="M25 88C45 30 81 89 113 38s45 6 45 6" fill="none" stroke="#ff6a33" stroke-width="3" stroke-dasharray="5 5"/><circle cx="25" cy="88" r="6" fill="#102a35"/><circle cx="158" cy="44" r="6" fill="#10b9b1"/><g transform="translate(84 48)" fill="#102a35"><rect x="-10" y="-3" width="20" height="7" rx="2"/><path d="M-7-3L-17-12M7-3L17-12M-7 4l-10 9M7 4l10 9" stroke="#102a35" stroke-width="3"/><circle cx="-18" cy="-13" r="6" fill="none" stroke="#102a35"/><circle cx="18" cy="-13" r="6" fill="none" stroke="#102a35"/></g></svg></div>
+          <div class="project-copy"><h3>Drone Path Planner</h3><p>Plots efficient waypoint routes through obstacle fields and exports a clear flight path for inspection.</p></div>
+          <div class="tags"><span class="tag">Python</span><span class="tag">Pathfinding</span><span class="tag">Drones</span></div>
+        </article>
+        <article class="project" data-category="puzzles">
+          <span class="project-id">P—04</span>
+          <div class="project-art" aria-hidden="true"><svg viewBox="0 0 180 112"><rect width="180" height="112" fill="#122631"/><g transform="translate(64 21) skewY(-8)" stroke="#122631" stroke-width="2"><rect width="22" height="22" fill="#f1ca45"/><rect x="23" width="22" height="22" fill="#ef6b3a"/><rect x="46" width="22" height="22" fill="#f3f3e8"/><rect y="23" width="22" height="22" fill="#35b690"/><rect x="23" y="23" width="22" height="22" fill="#207bc0"/><rect x="46" y="23" width="22" height="22" fill="#ef6b3a"/><rect y="46" width="22" height="22" fill="#f3f3e8"/><rect x="23" y="46" width="22" height="22" fill="#f1ca45"/><rect x="46" y="46" width="22" height="22" fill="#35b690"/></g></svg></div>
+          <div class="project-copy"><h3>Rubik’s Cube Solver</h3><p>Creates scrambles and returns beginner-friendly move sequences — algorithmic thinking in six colours.</p></div>
+          <div class="tags"><span class="tag">Python</span><span class="tag">Algorithms</span><span class="tag">Logic</span></div>
+        </article>
+        <article class="project" data-category="puzzles">
+          <span class="project-id">P—05</span>
+          <div class="project-art" aria-hidden="true"><svg viewBox="0 0 180 112"><rect width="180" height="112" fill="#e9ece4"/><g fill="#13262f"><path d="M48 88h35v-7H48zm5-11h25c-1-13-4-19-10-24l3-12h-11l3 12c-7 5-9 12-10 24z"/><path d="M106 88h34v-7h-34zm5-11h24c-2-10-8-16-12-18 9-7 10-15 7-26-15 4-23 15-19 44z"/></g><circle cx="126" cy="41" r="3" fill="#ff6a33"/></svg></div>
+          <div class="project-copy"><h3>Chess Puzzles</h3><p>Generates checkmate-in-one positions for quick tactical training and deliberate board reading.</p></div>
+          <div class="tags"><span class="tag">Python</span><span class="tag">Chess</span><span class="tag">Search</span></div>
+        </article>
+        <article class="project" data-category="worlds">
+          <span class="project-id">P—06</span>
+          <div class="project-art" aria-hidden="true"><svg viewBox="0 0 180 112"><rect width="180" height="112" fill="#0c2630"/><circle cx="90" cy="56" r="37" fill="#2ba59d"/><path d="M64 32c12 5 17 2 22 9 4 6-3 10 1 16 3 5 9 4 9 12 0 9-8 10-4 23M108 30c-1 7 8 8 7 15-1 8-12 8-11 16 1 7 10 7 11 16" fill="none" stroke="#c9e681" stroke-width="8" stroke-linecap="round"/><circle cx="129" cy="31" r="5" fill="#ff6a33"/></svg></div>
+          <div class="project-copy"><h3>Geo Quiz CLI</h3><p>A fast terminal quiz for countries, capitals, and flags — designed to make world knowledge stick.</p></div>
+          <div class="tags"><span class="tag">Python</span><span class="tag">CLI</span><span class="tag">Geography</span></div>
+        </article>
+        <article class="project" data-category="space">
+          <span class="project-id">P—07</span>
+          <div class="project-art" aria-hidden="true"><svg viewBox="0 0 180 112"><rect width="180" height="112" fill="#dce8e6"/><g transform="translate(91 58) rotate(28)"><path d="M0-39c10 13 12 33 8 52H-8c-4-19-2-39 8-52z" fill="#f3f1e6" stroke="#142935" stroke-width="2"/><circle cy="-13" r="7" fill="#10b9b1" stroke="#142935" stroke-width="2"/><path d="M-8 5l-12 16 13-3M8 5l12 16-13-3" fill="#ff6a33" stroke="#142935" stroke-width="2"/><path d="M-5 14l5 20 5-20" fill="#f5c951"/></g></svg></div>
+          <div class="project-copy"><h3>Procedural Rocket</h3><p>Generates a low-poly rocket model as an OBJ file, bridging code, geometry, and 3D design.</p></div>
+          <div class="tags"><span class="tag">Python</span><span class="tag">3D</span><span class="tag">OBJ</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="curiosity" id="curiosity">
+      <div class="section-head">
+        <span class="section-num">02 / ORBIT</span>
+        <div><h2 class="section-title">A curiosity with no borders.</h2><p class="section-note">Different subjects, one shared instinct: understand the system, test the rules, then build something with them.</p></div>
+      </div>
+      <div class="curiosity-layout">
+        <div class="curiosity-copy">
+          <p class="statement">The same question connects a planet, a drone, and a chess piece: <em>where can it go next?</em></p>
+          <p>I’m a student below matric level, learning through practical experiments. I like problems that reward patience — simulating movement, shaping 3D worlds, writing game logic, and finding the clean route through a puzzle.</p>
+          <div class="skill-legend" aria-label="Areas of interest">
+            <span><i></i>Astronomy & physics</span><span><i></i>Geography</span><span><i></i>Gaming & Minecraft</span><span><i></i>Drones & flight</span><span><i></i>3D modelling</span><span><i></i>Chess & cubes</span>
+          </div>
+        </div>
+        <div class="radar" aria-label="Curiosity map showing connected interests">
+          <div class="radar-core">LEARN<br>BUILD<br>REPEAT</div>
+          <span class="orbit-label">SPACE</span><span class="orbit-label">DRONES</span><span class="orbit-label">3D MODELS</span><span class="orbit-label">GEOGRAPHY</span><span class="orbit-label">GAMES</span><span class="orbit-label">PUZZLES</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="stack" id="stack">
+      <div class="section-head">
+        <span class="section-num">03 / METHOD</span>
+        <div><h2 class="section-title">Learning in public, one function at a time.</h2><p class="section-note">My current toolkit is Python-first, with C++ and SQL in the flight plan.</p></div>
+      </div>
+      <div class="stack-grid">
+        <div class="code-card" aria-label="Code illustrating Mohammad's learning method">
+          <span class="line"><i class="n">01</i><span class="kw">class</span> <span class="fn">Curiosity</span>:</span>
+          <span class="line"><i class="n">02</i>&nbsp;&nbsp;<span class="kw">def</span> <span class="fn">explore</span>(self, question):</span>
+          <span class="line"><i class="n">03</i>&nbsp;&nbsp;&nbsp;&nbsp;notes = self.observe(question)</span>
+          <span class="line"><i class="n">04</i>&nbsp;&nbsp;&nbsp;&nbsp;prototype = self.build(notes)</span>
+          <span class="line"><i class="n">05</i>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> self.improve(prototype)</span>
+          <span class="line"><i class="n">06</i></span>
+          <span class="line"><i class="n">07</i><span class="com"># Keep the loop running.</span></span>
+          <span class="line"><i class="n">08</i><span class="kw">while</span> <span class="str">"there is more to learn"</span>:</span>
+          <span class="line"><i class="n">09</i>&nbsp;&nbsp;Curiosity().explore(next_question)</span>
+        </div>
+        <div class="principles">
+          <article class="principle"><b>01</b><div><h3>Start from wonder</h3><p>The strongest projects begin with a question I genuinely want answered.</p></div></article>
+          <article class="principle"><b>02</b><div><h3>Make the idea visible</h3><p>A path, a planet, or a puzzle becomes easier to understand when I can interact with it.</p></div></article>
+          <article class="principle"><b>03</b><div><h3>Test, break, improve</h3><p>Every result is a new clue. Bugs are evidence, not the end of the experiment.</p></div></article>
+          <article class="principle"><b>04</b><div><h3>Share the build</h3><p>Clear code and an honest README turn private learning into something useful.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="toolkit" id="toolkit">
+      <div class="section-head">
+        <span class="section-num">04 / TOOLS</span>
+        <div><h2 class="section-title">Tools for shaping ideas.</h2><p class="section-note">From first sketch to playable world, these are the creative environments I’m exploring.</p></div>
+      </div>
+      <div class="tool-grid" aria-label="Creative and development tools">
+        <article class="tool"><div class="tool-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M8 21l14-8 7 6-9 3z"/><circle cx="27" cy="28" r="10"/><circle cx="29" cy="27" r="4"/><path d="M8 21l7 7h12"/></svg></div><div><strong>Blender</strong><span>3D modelling</span></div></article>
+        <article class="tool"><div class="tool-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 5l16 10v18L24 43 8 33V15zM24 5v19m16-9L24 24 8 15m16 9v19"/></svg></div><div><strong>Unity</strong><span>Game engine</span></div></article>
+        <article class="tool"><div class="tool-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M8 8h32v32H8zM15 15h18v18H15z"/><path d="M20 20h8v8h-8z"/></svg></div><div><strong>Core</strong><span>Game creation</span></div></article>
+        <article class="tool"><div class="tool-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="18"/><path d="M16 15v12c0 7 5 10 10 10 6 0 9-4 9-10V15m-4 0h8l-2 7"/></svg></div><div><strong>Unreal Engine</strong><span>Real-time worlds</span></div></article>
+        <article class="tool"><div class="tool-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M8 18l10-8 21 5v18l-21 5-10-8 8-6z"/><path d="M18 10v28M8 18l10 6L8 30"/></svg></div><div><strong>VS Code</strong><span>Code editor</span></div></article>
+        <article class="tool"><div class="tool-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M16 12c5-5 11 0 9 5 8-4 13 4 8 9 7 3 3 12-4 10-3 7-12 4-11-3-7 2-10-6-4-10 4-6-2-8 2-13z"/><circle cx="18" cy="23" r="1"/><circle cx="27" cy="22" r="1"/><path d="M18 29c4 3 8 2 11-1"/></svg></div><div><strong>Scratch</strong><span>Visual coding</span></div></article>
+        <article class="tool"><div class="tool-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M9 9h30v30H9zM16 16h16v16H16z"/><path d="M16 23h16M23 16v16"/><circle cx="28" cy="20" r="2"/></svg></div><div><strong>RPG Maker</strong><span>Story-driven games</span></div></article>
+      </div>
+    </section>
+
+    <section class="influences" id="influences">
+      <div class="influences-inner">
+        <div class="section-head">
+          <span class="section-num">05 / WORLDS</span>
+          <div><h2 class="section-title">What feeds the imagination.</h2><p class="section-note">Games, anime, and drawing references that make me want to build richer places and better stories.</p></div>
+        </div>
+        <div class="influence-grid">
+          <article class="influence">
+            <span class="influence-index">01 — PLAY</span>
+            <h3>Games</h3>
+            <ul class="name-list"><li>Minecraft</li><li>TheoTown</li><li>Car Driving School</li><li>Truckers of Europe</li><li>Monoposto F1</li><li>MadOut2</li><li>Payback 2</li></ul>
+          </article>
+          <article class="influence">
+            <span class="influence-index">02 — WATCH</span>
+            <h3>Anime</h3>
+            <ul class="name-list"><li>Jujutsu Kaisen</li><li>Demon Slayer</li><li>My Hero Academia</li><li>Attack on Titan</li><li>Shinchan</li><li>Doraemon</li><li>Pokémon</li></ul>
+          </article>
+          <article class="influence">
+            <span class="influence-index">03 — SKETCH</span>
+            <h3>Things I draw</h3>
+            <p class="sketch-note">Car models, architecture, urban scenes, natural scenery, and anime characters.</p>
+            <div class="sketch-strip" aria-hidden="true"><svg viewBox="0 0 360 126" preserveAspectRatio="none"><rect width="360" height="126" fill="currentColor" opacity=".03"/><g fill="none" stroke="currentColor" stroke-width="2"><path d="M-10 105h380M8 105l40-46 24 22 31-55 35 79M131 105V58h34v47m-21-47V39h43v66m-8-47h32v47"/><path d="M220 91c8-18 24-28 47-28h31c16 0 26 8 35 28l17 3v11H215V94zM242 91l13-19h36l18 19z"/><circle cx="244" cy="104" r="9"/><circle cx="320" cy="104" r="9"/></g><circle cx="43" cy="34" r="12" fill="#f5c951"/></svg></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="books" id="books">
+      <div class="section-head">
+        <span class="section-num">06 / BOOKS</span>
+        <div><h2 class="section-title">Ideas I keep within reach.</h2><p class="section-note">A shelf about habits, humility, money, meaning, and the stories we tell ourselves.</p></div>
+      </div>
+      <div class="bookshelf" aria-label="Reading shelf">
+        <div class="book book-1"><strong>Psycho-Cybernetics</strong><span>Maxwell Maltz</span></div>
+        <div class="book book-2"><strong>Ego Is the Enemy</strong><span>Ryan Holiday</span></div>
+        <div class="book book-3"><strong>Atomic Habits</strong><span>James Clear</span></div>
+        <div class="book book-4"><strong>Ikigai</strong><span>García & Miralles</span></div>
+        <div class="book book-5"><strong>Think and Grow Rich</strong><span>Napoleon Hill</span></div>
+        <div class="book book-6"><strong>The Psychology of Money</strong><span>Morgan Housel</span></div>
+      </div>
+      <p class="shelf-note">CURRENT SHELF — AND MANY MORE STILL TO COME</p>
+    </section>
+
+    <section class="quotes" id="quotes">
+      <div class="quotes-inner">
+        <div class="section-head">
+          <span class="section-num">07 / MINDSET</span>
+          <div><h2 class="section-title">Ideas for the long orbit.</h2><p class="section-note">A few reminders for staying curious, patient, and willing to begin again.</p></div>
+        </div>
+        <div class="quote-grid">
+          <article class="quote-lead">
+            <span class="quote-mark">01 / CURIOSITY</span>
+            <blockquote>“I don’t need to know everything. I need to stay <em>curious enough</em> to find out.”</blockquote>
+            <span class="quote-source">A note to my future self</span>
+          </article>
+          <article class="quote-card">
+            <span class="quote-mark">02 / PRACTICE</span>
+            <blockquote>“Learning never ends; it simply changes the questions I’m ready to ask.”</blockquote>
+            <p>Every finished project should reveal the next mystery.</p>
+          </article>
+          <article class="quote-card">
+            <span class="quote-mark">03 / COURAGE</span>
+            <blockquote>“Build the version you can today. Let tomorrow’s version prove how far you travelled.”</blockquote>
+            <p>Progress is visible when ideas leave the notebook.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="contact-grid">
+        <div>
+          <h2>Let’s build the <em>next idea.</em></h2>
+          <p class="contact-copy">Have a strange problem, an ambitious experiment, or a world worth modelling? I’d like to hear about it.</p>
+          <div class="contact-actions">
+            <a class="button primary" href="mailto:onlyfarmingaura13@gmail.com">Send an email ↗</a>
+            <button class="button" id="copyEmail" type="button">Copy email</button>
+          </div>
+        </div>
+        <div class="contact-side">
+          <div class="social-links" aria-label="Social profiles">
+            <span class="sr-only">Find Mohammad Ali online</span>
+            <a class="social-button" href="https://github.com/AliRender13" target="_blank" rel="noopener noreferrer" aria-label="Visit GitHub profile" title="GitHub"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 .8a11.4 11.4 0 0 0-3.6 22.2c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6a4.7 4.7 0 0 1 1.2-3.2c-.1-.3-.5-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.9.1 3.2a4.7 4.7 0 0 1 1.2 3.2c0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.4 11.4 0 0 0 12 .8Z"/></svg></a>
+            <a class="social-button" href="https://www.linkedin.com/in/rehman-khalid-" target="_blank" rel="noopener noreferrer" aria-label="Visit LinkedIn profile" title="LinkedIn"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5.3 7.8H1.7V22h3.6V7.8ZM3.5 2A2.1 2.1 0 1 0 3.5 6.2 2.1 2.1 0 0 0 3.5 2Zm8.2 5.8H8.2V22h3.6v-7c0-1.8.3-3.6 2.6-3.6 2.3 0 2.3 2.1 2.3 3.7V22h3.6v-7.8c0-3.8-.8-6.8-5.3-6.8-2.1 0-3.6 1.2-4.2 2.3h-.1V7.8Z"/></svg></a>
+          </div>
+          <div class="contact-row"><span>Focus</span><span>Python · C++ · SQL · 3D · Games</span></div>
+        </div>
+      </div>
+      <footer><span>Mohammad Ali · Student portfolio</span><span>Keep looking up.</span></footer>
+    </section>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite">Email copied</div>
+
+  <script>
+    (function(){
+      var canvas=document.getElementById('cosmos'),ctx=canvas.getContext('2d');
+      var stars=[],w=0,h=0,dpr=1,mouse={x:0,y:0},reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function resize(){dpr=Math.min(window.devicePixelRatio||1,2);w=canvas.clientWidth;h=canvas.clientHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);stars=[];var count=Math.min(220,Math.round(w*h/5000));for(var i=0;i<count;i++)stars.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+.2,a:Math.random()*.65+.2,d:Math.random()});draw(0)}
+      function planet(x,y,r,c1,c2){var g=ctx.createRadialGradient(x-r*.35,y-r*.4,r*.08,x,y,r);g.addColorStop(0,c1);g.addColorStop(1,c2);ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill()}
+      function draw(t){ctx.clearRect(0,0,w,h);var g=ctx.createRadialGradient(w*.76,h*.34,10,w*.76,h*.34,Math.max(w,h)*.72);g.addColorStop(0,'#153b47');g.addColorStop(.45,'#091f2a');g.addColorStop(1,'#040f16');ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+        for(var i=0;i<stars.length;i++){var s=stars[i],tw=reduce?1:(.7+.3*Math.sin(t*.001+s.x));ctx.fillStyle='rgba(215,247,241,'+(s.a*tw)+')';ctx.beginPath();ctx.arc(s.x+mouse.x*s.d*4,s.y+mouse.y*s.d*4,s.r,0,6.3);ctx.fill()}
+        var cx=w*(w<800?.71:.76)+mouse.x*12,cy=h*.32+mouse.y*9;
+        ctx.save();ctx.translate(cx,cy);ctx.rotate(-.22);ctx.strokeStyle='rgba(94,193,191,.28)';ctx.lineWidth=1;[110,175,250].forEach(function(r){ctx.beginPath();ctx.ellipse(0,0,r,r*.32,0,0,6.3);ctx.stroke()});ctx.restore();
+        planet(cx,cy,Math.min(72,w*.13),'#70e6d6','#0d625e');
+        var a=reduce?.8:t*.00016;planet(cx+Math.cos(a)*175,cy+Math.sin(a)*56,12,'#ffc76a','#a73922');
+        planet(cx+Math.cos(a+2.4)*250,cy+Math.sin(a+2.4)*80,7,'#e8f2ee','#56757a');
+        if(!reduce)requestAnimationFrame(draw)
+      }
+      window.addEventListener('resize',resize);window.addEventListener('pointermove',function(e){mouse.x=(e.clientX/w-.5);mouse.y=(e.clientY/h-.5)});resize();if(!reduce)requestAnimationFrame(draw);
+      var filters=document.querySelectorAll('.filter'),projects=document.querySelectorAll('.project');filters.forEach(function(btn){btn.addEventListener('click',function(){var f=btn.getAttribute('data-filter');filters.forEach(function(b){b.setAttribute('aria-pressed',b===btn?'true':'false')});projects.forEach(function(p){p.hidden=f!=='all'&&p.getAttribute('data-category')!==f})})});
+      var copy=document.getElementById('copyEmail'),toast=document.getElementById('toast');copy.addEventListener('click',function(){var text='onlyfarmingaura13@gmail.com';if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(showToast)}else{var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showToast()}});function showToast(){toast.classList.add('show');copy.textContent='Copied';setTimeout(function(){toast.classList.remove('show');copy.textContent='Copy email'},1800)}
+    })();
+  </script>
+</body>
+</html>
